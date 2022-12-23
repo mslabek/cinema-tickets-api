@@ -23,19 +23,19 @@ public class Room {
     private Long id;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Seat> seats = new ArrayList<>();
+    private List<Row> rows = new ArrayList<>();
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Screening> screenings = new ArrayList<>();
 
-    public void addSeat(Seat seat) {
-        seats.add(seat);
-        seat.setRoom(this);
+    public void addRow(Row row) {
+        rows.add(row);
+        row.setRoom(this);
     }
 
-    public void removeSeat(Seat seat) {
-        seats.remove(seat);
-        seat.setRoom(null);
+    public void removeRow(Row row) {
+        rows.remove(row);
+        row.setRoom(null);
     }
 
     public void addScreening(Screening screening) {

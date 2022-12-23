@@ -1,6 +1,7 @@
 package com.application.cinematicketsapi.demo.service;
 
 import com.application.cinematicketsapi.cinema.model.Room;
+import com.application.cinematicketsapi.cinema.model.Row;
 import com.application.cinematicketsapi.cinema.model.Seat;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -40,17 +41,19 @@ public class CinemaObjectMother {
      */
     public Room generateRoom(int seatRows, int seatColumns) {
         Room room = new Room();
-        for (int row = 1; row <= seatRows; row++) {
+        for (int rowNum = 1; rowNum <= seatRows; rowNum++) {
+            Row row = new Row();
+            row.setNumber(rowNum);
             for (int column = 1; column <= seatColumns; column++) {
-                room.addSeat(generateSeat(row, column));
+                row.addSeat(generateSeat(column));
             }
+            room.addRow(row);
         }
         return room;
     }
 
-    private Seat generateSeat(int row, int column) {
+    private Seat generateSeat(int column) {
         Seat seat = new Seat();
-        seat.setRow(row);
         seat.setColumn(column);
         return seat;
     }
