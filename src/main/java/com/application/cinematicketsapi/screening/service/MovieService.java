@@ -17,32 +17,55 @@ import java.util.function.Supplier;
  */
 @Service
 @RequiredArgsConstructor
-public class MovieService {
+public class MovieService implements MovieDtoService {
 
     private final MovieRepository movieRepository;
     private final MovieMapper movieMapper;
 
+    /**
+     * Stores the {@link Movie} in repository.
+     *
+     * @param movie the movie to be persisted
+     */
     public void saveMovie(Movie movie) {
         movieRepository.save(movie);
     }
 
+    /**
+     * Retrieves all {@link Movie} entities from repository.
+     *
+     * @return the list of dtos representing all found {@code Movie} entities
+     */
     public List<Movie> getAllMovies() {
         return movieRepository.findAll();
     }
 
+    /**
+     * Retrieves a {@link Movie} entity with specified {@code id} from repository.
+     *
+     * @param id the id of the searched {@code Movie}
+     * @return the found {@code Movie} entity
+     */
     public Movie getMovieWithScreenings(Long id) {
         return movieRepository.findByIdWithScreenings(id).orElseThrow(getResourceNotFoundExceptionSupplier());
     }
 
+    /**
+     * Retrieves a {@link Movie} entity with specified {@code title} from repository.
+     *
+     * @param title the title of the searched {@code Movie}
+     * @return the found {@code Movie} entity
+     */
     public Movie getMovie(String title) {
         return movieRepository.findByTitle(title).orElseThrow(getResourceNotFoundExceptionSupplier());
     }
 
-
+    @Override
     public List<MovieSimpleDto> getAllMovieSimpleDto() {
         return getAllMovies().stream().map(movieMapper::movieToMovieSimpleDto).toList();
     }
 
+    @Override
     public MovieDetailedDto getMovieDetailedDto(Long id) {
         return movieMapper.movieToMovieBigDto(getMovieWithScreenings(id));
     }

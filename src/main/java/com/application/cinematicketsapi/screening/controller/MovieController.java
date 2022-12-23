@@ -3,7 +3,7 @@ package com.application.cinematicketsapi.screening.controller;
 import com.application.cinematicketsapi.screening.dto.MovieDetailedDto;
 import com.application.cinematicketsapi.screening.dto.MovieSimpleDto;
 import com.application.cinematicketsapi.screening.model.Movie;
-import com.application.cinematicketsapi.screening.service.MovieService;
+import com.application.cinematicketsapi.screening.service.MovieDtoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MovieController {
 
-    private final MovieService movieService;
+    private final MovieDtoService movieService;
 
     /**
      * Retrieves all {@link Movie Movies} from repository.
