@@ -2,8 +2,7 @@ package com.application.cinematicketsapi.screening.model;
 
 import com.application.cinematicketsapi.cinema.model.Room;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -14,8 +13,11 @@ import java.time.LocalDateTime;
  * specified time.
  */
 @Entity
+@Builder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Screening {
 
     @Id

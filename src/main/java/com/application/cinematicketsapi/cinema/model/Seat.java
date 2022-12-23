@@ -2,8 +2,7 @@ package com.application.cinematicketsapi.cinema.model;
 
 import com.application.cinematicketsapi.ticket.model.Ticket;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +11,11 @@ import java.util.List;
  * Entity representing a seat.
  */
 @Entity
+@Builder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Seat {
 
     @Id

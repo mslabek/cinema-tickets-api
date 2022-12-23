@@ -1,8 +1,7 @@
 package com.application.cinematicketsapi.screening.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +10,11 @@ import java.util.List;
  * Entity representing a movie.
  */
 @Entity
+@Builder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Movie {
 
     @Id

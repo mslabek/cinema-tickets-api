@@ -3,8 +3,7 @@ package com.application.cinematicketsapi.ticket.model;
 import com.application.cinematicketsapi.cinema.model.Seat;
 import com.application.cinematicketsapi.screening.model.Screening;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * Entity representing a ticket.
@@ -20,8 +19,11 @@ import lombok.Setter;
  * whether the ticket is valid in the ticket table seems simpler than other solutions.
  */
 @Entity
+@Builder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Ticket {
 
     @Id
