@@ -14,6 +14,11 @@ public class ScreeningService {
 
     private final ScreeningRepository screeningRepository;
 
+    /**
+     * Stores the {@link Screening} in repository.
+     *
+     * @param screening the screening to be persisted
+     */
     public void saveScreening(Screening screening) {
         screeningRepository.save(screening);
     }
