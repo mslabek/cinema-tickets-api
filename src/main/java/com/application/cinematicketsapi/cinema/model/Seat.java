@@ -26,11 +26,11 @@ public class Seat {
     @Column(name = "seat_column")
     private Integer column;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     private Room room;
 
-    @OneToMany(mappedBy = "seat", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "seat", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Ticket> tickets = new ArrayList<>();
 
     public void addTicket(Ticket ticket) {

@@ -5,7 +5,6 @@ import com.application.cinematicketsapi.screening.dto.MovieSimpleDto;
 import com.application.cinematicketsapi.screening.mapper.MovieMapper;
 import com.application.cinematicketsapi.screening.model.Movie;
 import com.application.cinematicketsapi.screening.repository.MovieRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +28,9 @@ public class MovieService {
         return movieRepository.findAll();
     }
 
-    public Movie getMovie(Long id) {
-        return movieRepository.findById(id).orElseThrow(() -> new RuntimeException("Movie not found in the database."));
+    public Movie getMovieWithScreenings(Long id) {
+        return movieRepository.findByIdWithScreenings(id).orElseThrow(() -> new RuntimeException("Movie not found in " +
+                "the database."));
     }
 
     public Movie getMovie(String title) {
@@ -42,9 +42,8 @@ public class MovieService {
         return getAllMovies().stream().map(movieMapper::movieToMovieSimpleDto).toList();
     }
 
-    @Transactional
     public MovieDetailedDto getMovieDetailedDto(Long id) {
-        return movieMapper.movieToMovieBigDto(getMovie(id));
+        return movieMapper.movieToMovieBigDto(getMovieWithScreenings(id));
     }
 
 }

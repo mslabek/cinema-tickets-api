@@ -21,7 +21,7 @@ public class Movie {
 
     private String title;
 
-    @OneToMany(mappedBy = "movie", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Screening> screenings = new ArrayList<>();
 
     public void addScreening(Screening screening) {

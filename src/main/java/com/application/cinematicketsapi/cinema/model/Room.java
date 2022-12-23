@@ -20,10 +20,10 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "room", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Seat> seats = new ArrayList<>();
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "room", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Screening> screenings = new ArrayList<>();
 
     public void addSeat(Seat seat) {
