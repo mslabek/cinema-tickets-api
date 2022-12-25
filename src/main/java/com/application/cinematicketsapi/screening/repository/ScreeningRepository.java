@@ -34,7 +34,8 @@ public interface ScreeningRepository extends JpaRepository<Screening, Long> {
             "JOIN FETCH s.room r " +
             "JOIN FETCH r.rows rows " +
             "JOIN FETCH rows.seats seats " +
-            "LEFT JOIN FETCH seats.tickets " +
+            "LEFT JOIN FETCH seats.tickets t " +
+            "LEFT JOIN FETCH t.screening " +
             "WHERE s.id = :id")
     Optional<Screening> findScreeningWithMovieSeatsAndAllSeatTickets(Long id);
 

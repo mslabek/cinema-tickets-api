@@ -1,12 +1,16 @@
 package com.application.cinematicketsapi.cinema.service;
 
+import com.application.cinematicketsapi.cinema.dto.SeatStatus;
 import com.application.cinematicketsapi.cinema.model.Seat;
 import com.application.cinematicketsapi.cinema.repository.SeatRepository;
 import com.application.cinematicketsapi.common.exception.ResourceNotFoundException;
 import com.application.cinematicketsapi.screening.model.Screening;
+import com.application.cinematicketsapi.ticket.model.Ticket;
+import com.application.cinematicketsapi.ticket.model.TicketStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 /**
@@ -48,6 +52,27 @@ public class SeatService {
 
     private Supplier<ResourceNotFoundException> getResourceNotFoundExceptionSupplier() {
         return () -> new ResourceNotFoundException("Seat not found in the database");
+    }
+
+    public SeatStatus establishSeatStatusWithOnlyOneRelevantTicket(Seat seat) {
+        List<Ticket> tickets = seat.getTickets();
+        if (tickets.size() > 1) {
+            throw new RuntimeException("Tickets were not filtered - more than one relevant ticket exists");
+        }
+        if (tickets.isEmpty()) {
+            return SeatStatus.FREE;
+        }
+        Ticket ticket = tickets.get(0);
+        if (ticket.getStatus() == TicketStatus.EXPIRED) {
+            throw new RuntimeException("Tickets were not filtered - relevant ticket is expired");
+        }
+        if (ticket.getStatus() == TicketStatus.SOLD || ticket.getStatus() == TicketStatus.RESERVED) {
+            return SeatStatus.TAKEN;
+        } else {
+            throw new RuntimeException("Unexpected scenario. Ticket status unknown. Was there anything added to the " +
+                    "TicketStatus enum?");
+        }
+
     }
 
 }
