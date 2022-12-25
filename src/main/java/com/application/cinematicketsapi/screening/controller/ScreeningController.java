@@ -1,5 +1,6 @@
 package com.application.cinematicketsapi.screening.controller;
 
+import com.application.cinematicketsapi.cinema.model.Seat;
 import com.application.cinematicketsapi.screening.dto.ScreeningDetailedDto;
 import com.application.cinematicketsapi.screening.dto.ScreeningFullDto;
 import com.application.cinematicketsapi.screening.model.Screening;
@@ -48,10 +49,19 @@ public class ScreeningController {
         return screeningService.getAllScreeningsBetweenDatesSorted(lowerTimeBoundary, upperTimeBoundary);
     }
 
+    /**
+     * Retrieves a {@link Screening} from repository mapped to a very detailed dto. This dto contains information about
+     * all {@link Seat seats} that are in a room where the {code screening} takes place and the status of these
+     * {@code seats} for the specified {@code screening}.
+     * <p>
+     * This can be used for creating a view where the client can select seats for reservation.
+     *
+     * @param id the id of the searched {@code Screening}
+     * @return the dto representing the found {@code Screening} containing seat status
+     */
     @GetMapping("/{id}")
     public ScreeningFullDto getScreeningWithSeatStatus(@PathVariable Long id) {
         return screeningService.getScreeningWithSeatStatus(id);
     }
-
 
 }

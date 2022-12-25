@@ -1,5 +1,6 @@
 package com.application.cinematicketsapi.screening.service;
 
+import com.application.cinematicketsapi.cinema.model.Seat;
 import com.application.cinematicketsapi.screening.dto.ScreeningDetailedDto;
 import com.application.cinematicketsapi.screening.dto.ScreeningFullDto;
 import com.application.cinematicketsapi.screening.model.Screening;
@@ -32,6 +33,14 @@ public interface ScreeningDtoService {
     List<ScreeningDetailedDto> getAllScreeningsBetweenDatesSorted(LocalDateTime lowerTimeBoundary,
                                                                   LocalDateTime upperTimeBoundary);
 
+    /**
+     * Retrieves a {@link Screening} from repository mapped to a very detailed dto. This dto contains information about
+     * all {@link Seat seats} that are in a room where the {code screening} takes place and the status of these
+     * {@code seats} for the specified {@code screening}.
+     *
+     * @param id the id of the searched {@code Screening}
+     * @return the dto representing the found {@code Screening} containing seat status
+     */
     ScreeningFullDto getScreeningWithSeatStatus(Long id);
 
 }

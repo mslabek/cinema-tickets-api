@@ -54,6 +54,22 @@ public class SeatService {
         return () -> new ResourceNotFoundException("Seat not found in the database");
     }
 
+    /**
+     * Establishes status of a {@link Seat} if it contains only one relevant {@link  Ticket}.
+     * <p>
+     * This method requires filtering out the following tickets in the {@code Seat}:
+     * <ul>
+     *     <li>
+     *         tickets that are not associated with a particular {@code Screening}
+     *     </li>
+     *     <li>
+     *         tickets with the {@code EXPIRED} {@link TicketStatus}
+     *     </li>
+     * </ul>
+     *
+     * @param seat the seat containing only one relevant {@code Ticket}
+     * @return the established seat status
+     */
     public SeatStatus establishSeatStatusWithOnlyOneRelevantTicket(Seat seat) {
         List<Ticket> tickets = seat.getTickets();
         if (tickets.size() > 1) {
@@ -72,7 +88,6 @@ public class SeatService {
             throw new RuntimeException("Unexpected scenario. Ticket status unknown. Was there anything added to the " +
                     "TicketStatus enum?");
         }
-
     }
 
 }

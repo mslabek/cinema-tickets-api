@@ -42,7 +42,7 @@ public class ScreeningService implements ScreeningDtoService {
     }
 
     /**
-     * Retrieves all {@link Screening Screenings}from repository containing all associated {@link Movie Movies}.
+     * Retrieves all {@link Screening Screenings} from repository containing all associated {@link Movie Movies}.
      *
      * @return the list of {@code Screening} entities containing associated {@code Movies}
      */
@@ -50,6 +50,12 @@ public class ScreeningService implements ScreeningDtoService {
         return screeningRepository.findAllWithMovies();
     }
 
+    /**
+     * Retrieves a {@link Screening} entity with a specified {@code id} from repository.
+     *
+     * @param id the id of the searched {@code Screening}
+     * @return the found {@code Screening}
+     */
     public Screening getScreening(Long id) {
         return screeningRepository.findById(id)
                                   .orElseThrow(getResourceNotFoundExceptionSupplier());
@@ -71,6 +77,7 @@ public class ScreeningService implements ScreeningDtoService {
                                   .toList();
     }
 
+    @Override
     public ScreeningFullDto getScreeningWithSeatStatus(Long id) {
         Screening screening = screeningRepository.findScreeningWithMovieSeatsAndAllSeatTickets(id)
                                                  .orElseThrow(getResourceNotFoundExceptionSupplier());
