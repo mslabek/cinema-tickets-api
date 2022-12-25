@@ -4,10 +4,13 @@ import com.application.cinematicketsapi.cinema.model.Room;
 import com.application.cinematicketsapi.cinema.service.RoomService;
 import com.application.cinematicketsapi.demo.model.CinemaDemoData;
 import com.application.cinematicketsapi.demo.model.MovieDemoData;
+import com.application.cinematicketsapi.demo.model.TicketDemoData;
 import com.application.cinematicketsapi.screening.model.Movie;
 import com.application.cinematicketsapi.screening.model.Screening;
 import com.application.cinematicketsapi.screening.service.MovieService;
 import com.application.cinematicketsapi.screening.service.ScreeningService;
+import com.application.cinematicketsapi.ticket.model.Ticket;
+import com.application.cinematicketsapi.ticket.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,8 @@ public class DataGenerator {
     private final MovieService movieService;
     private final ScreeningService screeningService;
     private final RoomService roomService;
+    private final TicketService ticketService;
+    private final TicketObjectMother ticketObjectMother;
 
     public void generateAndPersistRooms(CinemaDemoData cinemaData) {
         generateRooms(cinemaData.getRooms(), cinemaData.getSeatRows(), cinemaData.getSeatColumns()).forEach(roomService::saveRoom);
@@ -41,6 +46,11 @@ public class DataGenerator {
         generateScreenings(moviesConfig).forEach(screeningService::saveScreening);
     }
 
+    @Transactional
+    public void generateAndPersistTickets(List<TicketDemoData> ticketData) {
+        generateTickets(ticketData).forEach(ticketService::saveTicket);
+    }
+
     public List<Room> generateRooms(int roomCount, int seatRows, int seatColumns) {
         return cinemaObjectMother.generateRooms(roomCount, seatRows, seatColumns);
     }
@@ -50,7 +60,14 @@ public class DataGenerator {
     }
 
     public List<Screening> generateScreenings(List<MovieDemoData> moviesData) {
-        return moviesData.stream().map(this::generateScreeningsForOneMovie).flatMap(Collection::stream).toList();
+        return moviesData.stream()
+                         .map(this::generateScreeningsForOneMovie)
+                         .flatMap(Collection::stream)
+                         .toList();
+    }
+
+    public List<Ticket> generateTickets(List<TicketDemoData> tickets) {
+        return ticketObjectMother.generateTickets(tickets);
     }
 
     private List<Screening> generateScreeningsForOneMovie(MovieDemoData movieData) {

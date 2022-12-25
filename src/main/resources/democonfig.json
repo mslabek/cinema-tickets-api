@@ -80,5 +80,25 @@
         }
       ]
     }
+  ],
+  "tickets": [
+    {
+      "screeningId": 1,
+      "row": 1,
+      "column": 1,
+      "status": "SOLD"
+    },
+    {
+      "screeningId": 1,
+      "row": 1,
+      "column": 2,
+      "status": "RESERVED"
+    },
+    {
+      "screeningId": 1,
+      "row": 1,
+      "column": 3,
+      "status": "EXPIRED"
+    }
   ]
 }

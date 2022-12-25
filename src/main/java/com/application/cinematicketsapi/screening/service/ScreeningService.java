@@ -44,6 +44,11 @@ public class ScreeningService implements ScreeningDtoService {
         return screeningRepository.findAllWithMovies();
     }
 
+    public Screening getScreening(Long id) {
+        return screeningRepository.findById(id)
+                                  .orElseThrow(getResourceNotFoundExceptionSupplier());
+    }
+
     @Override
     public List<ScreeningDetailedDto> getAllScreeningDetailedDto() {
         return getAllScreeningsWithMovies().stream()

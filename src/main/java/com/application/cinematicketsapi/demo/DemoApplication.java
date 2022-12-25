@@ -41,6 +41,7 @@ public class DemoApplication implements CommandLineRunner {
         dataGenerator.generateAndPersistRooms(demoData.getCinema());
         dataGenerator.generateAndPersistMovies(demoData.getMovies());
         dataGenerator.generateAndPersistScreenings(demoData.getMovies());
+        dataGenerator.generateAndPersistTickets(demoData.getTickets());
     }
 
 }
