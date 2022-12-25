@@ -3,8 +3,8 @@ package com.application.cinematicketsapi.cinema.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Entity representing a row of {@link Seat seats} in a cinema {@link Room room}.
@@ -29,7 +29,8 @@ public class Row {
     private Room room;
 
     @OneToMany(mappedBy = "row", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Seat> seats = new ArrayList<>();
+    @OrderBy("column ASC")
+    private Set<Seat> seats = new LinkedHashSet<>();
 
     public void addSeat(Seat seat) {
         seats.add(seat);

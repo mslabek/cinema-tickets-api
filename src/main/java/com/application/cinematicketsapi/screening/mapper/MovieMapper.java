@@ -11,7 +11,7 @@ import org.mapstruct.Mapper;
  * Mapper used to handle mapping and updating operations on {@link Movie} objects and on related dtos.
  */
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR, collectionMappingStrategy =
-        CollectionMappingStrategy.ADDER_PREFERRED, uses = ScreeningMapper.class)
+        CollectionMappingStrategy.ADDER_PREFERRED, uses = ScreeningSimpleMapper.class)
 public interface MovieMapper {
 
     MovieSimpleDto movieToMovieSimpleDto(Movie movie);

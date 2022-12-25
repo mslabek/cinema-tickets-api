@@ -1,7 +1,10 @@
 package com.application.cinematicketsapi.screening.service;
 
+import com.application.cinematicketsapi.common.exception.ResourceNotFoundException;
 import com.application.cinematicketsapi.screening.dto.ScreeningDetailedDto;
-import com.application.cinematicketsapi.screening.mapper.ScreeningMapper;
+import com.application.cinematicketsapi.screening.dto.ScreeningFullDto;
+import com.application.cinematicketsapi.screening.mapper.ScreeningComplexMapper;
+import com.application.cinematicketsapi.screening.mapper.ScreeningSimpleMapper;
 import com.application.cinematicketsapi.screening.model.Movie;
 import com.application.cinematicketsapi.screening.model.Screening;
 import com.application.cinematicketsapi.screening.repository.ScreeningRepository;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Service handling operations on {@link Screening} objects.
@@ -19,7 +23,8 @@ import java.util.List;
 public class ScreeningService implements ScreeningDtoService {
 
     private final ScreeningRepository screeningRepository;
-    private final ScreeningMapper screeningMapper;
+    private final ScreeningSimpleMapper screeningSimpleMapper;
+    private final ScreeningComplexMapper screeningComplexMapper;
 
     /**
      * Stores the {@link Screening} in repository.
@@ -42,7 +47,7 @@ public class ScreeningService implements ScreeningDtoService {
     @Override
     public List<ScreeningDetailedDto> getAllScreeningDetailedDto() {
         return getAllScreeningsWithMovies().stream()
-                                           .map(screeningMapper::screeningToDetailedDto)
+                                           .map(screeningSimpleMapper::screeningToDetailedDto)
                                            .toList();
     }
 
@@ -51,8 +56,24 @@ public class ScreeningService implements ScreeningDtoService {
                                                                          LocalDateTime upperTimeBoundary) {
         return screeningRepository.findAllBeginningBetweenDatesSortedByTitleAndTime(lowerTimeBoundary, upperTimeBoundary)
                                   .stream()
-                                  .map(screeningMapper::screeningToDetailedDto)
+                                  .map(screeningSimpleMapper::screeningToDetailedDto)
                                   .toList();
+    }
+
+    public ScreeningFullDto getScreeningWithSeatStatus(Long id) {
+        Screening screening =
+                screeningRepository.findScreeningWithMovieSeatsAndAllSeatTickets(id)
+                                   .orElseThrow(getResourceNotFoundExceptionSupplier());
+        filterTicketsExpiredAndFromOtherScreenings(screening);
+        return screeningComplexMapper.screeningToFullDto(screening);
+    }
+
+    private void filterTicketsExpiredAndFromOtherScreenings(Screening screening) {
+        // TODO
+    }
+
+    private static Supplier<ResourceNotFoundException> getResourceNotFoundExceptionSupplier() {
+        return () -> new ResourceNotFoundException("Screening not found in the database");
     }
 
 }

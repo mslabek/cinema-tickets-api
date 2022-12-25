@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Entity representing a cinema room.
@@ -23,7 +25,8 @@ public class Room {
     private Long id;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Row> rows = new ArrayList<>();
+    @OrderBy("number ASC")
+    private Set<Row> rows = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Screening> screenings = new ArrayList<>();

@@ -1,6 +1,7 @@
 package com.application.cinematicketsapi.screening.service;
 
 import com.application.cinematicketsapi.screening.dto.ScreeningDetailedDto;
+import com.application.cinematicketsapi.screening.dto.ScreeningFullDto;
 import com.application.cinematicketsapi.screening.model.Screening;
 
 import java.time.LocalDateTime;
@@ -30,5 +31,7 @@ public interface ScreeningDtoService {
      */
     List<ScreeningDetailedDto> getAllScreeningsBetweenDatesSorted(LocalDateTime lowerTimeBoundary,
                                                                   LocalDateTime upperTimeBoundary);
+
+    ScreeningFullDto getScreeningWithSeatStatus(Long id);
 
 }

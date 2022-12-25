@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository used to perform CRUD operations on {@link Screening} entities in the persistence layer.
@@ -27,5 +28,14 @@ public interface ScreeningRepository extends JpaRepository<Screening, Long> {
     List<Screening> findAllBeginningBetweenDatesSortedByTitleAndTime(
             @Param("lowerTime") LocalDateTime lowerTimeBoundary,
             @Param("upperTime") LocalDateTime upperTimeBoundary);
+
+    @Query("SELECT s FROM Screening s " +
+            "JOIN FETCH s.movie " +
+            "JOIN FETCH s.room r " +
+            "JOIN FETCH r.rows rows " +
+            "JOIN FETCH rows.seats seats " +
+            "LEFT JOIN FETCH seats.tickets " +
+            "WHERE s.id = :id")
+    Optional<Screening> findScreeningWithMovieSeatsAndAllSeatTickets(Long id);
 
 }

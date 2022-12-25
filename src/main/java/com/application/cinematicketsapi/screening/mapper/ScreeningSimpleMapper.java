@@ -13,7 +13,7 @@ import org.mapstruct.Mapping;
  */
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR, collectionMappingStrategy =
         CollectionMappingStrategy.ADDER_PREFERRED, uses = MovieMapper.class)
-public interface ScreeningMapper {
+public interface ScreeningSimpleMapper {
 
     @Mapping(target = "roomId", source = "room.id")
     ScreeningSimpleDto screeningToSimpleDto(Screening screening);

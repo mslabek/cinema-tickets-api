@@ -1,13 +1,11 @@
 package com.application.cinematicketsapi.screening.controller;
 
 import com.application.cinematicketsapi.screening.dto.ScreeningDetailedDto;
+import com.application.cinematicketsapi.screening.dto.ScreeningFullDto;
 import com.application.cinematicketsapi.screening.model.Screening;
 import com.application.cinematicketsapi.screening.service.ScreeningDtoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -48,6 +46,11 @@ public class ScreeningController {
             @RequestParam(value = "begins-after") LocalDateTime lowerTimeBoundary,
             @RequestParam(value = "begins-before") LocalDateTime upperTimeBoundary) {
         return screeningService.getAllScreeningsBetweenDatesSorted(lowerTimeBoundary, upperTimeBoundary);
+    }
+
+    @GetMapping("/{id}")
+    public ScreeningFullDto getScreeningWithSeatStatus(@PathVariable Long id) {
+        return screeningService.getScreeningWithSeatStatus(id);
     }
 
 
