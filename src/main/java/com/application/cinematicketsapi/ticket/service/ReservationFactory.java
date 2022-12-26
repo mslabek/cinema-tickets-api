@@ -3,6 +3,8 @@ package com.application.cinematicketsapi.ticket.service;
 import com.application.cinematicketsapi.cinema.model.Row;
 import com.application.cinematicketsapi.cinema.model.Seat;
 import com.application.cinematicketsapi.screening.model.Screening;
+import com.application.cinematicketsapi.screening.service.ScreeningService;
+import com.application.cinematicketsapi.ticket.exception.ReservationRejectedException;
 import com.application.cinematicketsapi.ticket.form.ReservationCreationForm;
 import com.application.cinematicketsapi.ticket.form.TicketCreationForm;
 import com.application.cinematicketsapi.ticket.model.Reservation;
@@ -22,6 +24,7 @@ public class ReservationFactory {
     private final TicketFactory ticketFactory;
     private final RowValidator rowValidator;
     private final ReservationExpiryCalculator expiryCalculator;
+    private final ScreeningService screeningService;
 
     public Reservation buildReservation(ReservationCreationForm form, Screening screening) {
         Reservation reservation = new Reservation();
@@ -32,8 +35,15 @@ public class ReservationFactory {
         }
         validateModifiedRows(tickets);
 
+
         reservation.setCreatedAt(LocalDateTime.now()
                                               .truncatedTo(ChronoUnit.SECONDS));
+
+        if (!screeningService.reservationsPossible(screening, reservation.getCreatedAt())) {
+            throw new ReservationRejectedException("Reservations for this screening are not possible now. " +
+                    "Tickets cannot be booked after 15 minutes to screening beginning time.");
+        }
+
         reservation.setExpiresAt(expiryCalculator.calculate(reservation.getCreatedAt(), screening.getBeginning()));
         reservation.setStatus(ReservationStatus.PENDING);
         reservation.setName(form.getName());
@@ -59,6 +69,5 @@ public class ReservationFactory {
                       .distinct()
                       .toList();
     }
-
 
 }

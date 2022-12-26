@@ -127,6 +127,12 @@ public class ScreeningService implements ScreeningDtoService {
                                 "screening"));
     }
 
+    public boolean reservationsPossible(Screening screening, LocalDateTime reservationCreationTime) {
+        LocalDateTime reservationCloseTime = screening.getBeginning()
+                                                      .minusMinutes(15);
+        return reservationCreationTime.isBefore(reservationCloseTime);
+    }
+
     private static Supplier<ResourceNotFoundException> getResourceNotFoundExceptionSupplier() {
         return () -> new ResourceNotFoundException("Screening not found in the database");
     }
