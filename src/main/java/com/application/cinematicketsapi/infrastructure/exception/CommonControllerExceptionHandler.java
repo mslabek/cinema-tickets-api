@@ -6,6 +6,8 @@ import com.application.cinematicketsapi.common.exception.ResourceNotFoundExcepti
 import com.application.cinematicketsapi.ticket.exception.ReservationPaymentException;
 import com.application.cinematicketsapi.ticket.exception.ReservationRejectedException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -53,6 +55,20 @@ public class CommonControllerExceptionHandler {
                                  .toList();
         ApiError error = new ApiError(getTimeNowTruncated(), status.value(), status.name(), message, details, request.getServletPath());
 
+        return generateDefaultResponse(error, status);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Object> handleValidationError(ConstraintViolationException ex, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        List<ConstraintViolation<?>> violations = ex.getConstraintViolations()
+                                                    .stream()
+                                                    .toList();
+        String message = "Validation failed with: " + violations.size() + " errors.";
+        List<String> details = violations.stream()
+                                         .map(ConstraintViolation::getMessage)
+                                         .toList();
+        ApiError error = new ApiError(getTimeNowTruncated(), status.value(), status.name(), message, details, request.getServletPath());
         return generateDefaultResponse(error, status);
     }
 

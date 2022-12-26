@@ -5,7 +5,9 @@ import com.application.cinematicketsapi.screening.dto.ScreeningDetailedDto;
 import com.application.cinematicketsapi.screening.dto.ScreeningFullDto;
 import com.application.cinematicketsapi.screening.model.Screening;
 import com.application.cinematicketsapi.screening.service.ScreeningDtoService;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -17,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/screenings")
 @RequiredArgsConstructor
+@Validated
 public class ScreeningController {
 
     private final ScreeningDtoService screeningService;
@@ -60,7 +63,8 @@ public class ScreeningController {
      * @return the dto representing the found {@code Screening} containing seat status
      */
     @GetMapping("/{id}")
-    public ScreeningFullDto getScreeningWithSeatStatus(@PathVariable Long id) {
+    public ScreeningFullDto getScreeningWithSeatStatus(
+            @PathVariable @Min(value = 1, message = "Screening id cannot be smaller than 1.") Long id) {
         return screeningService.getScreeningWithSeatStatus(id);
     }
 
