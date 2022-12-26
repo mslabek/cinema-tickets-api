@@ -9,6 +9,7 @@ import com.application.cinematicketsapi.ticket.exception.ReservationRejectedExce
 import com.application.cinematicketsapi.ticket.form.TicketCreationForm;
 import com.application.cinematicketsapi.ticket.model.Ticket;
 import com.application.cinematicketsapi.ticket.model.TicketStatus;
+import com.application.cinematicketsapi.ticket.model.TicketType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +27,11 @@ public class TicketFactory {
         Seat seat = screeningService.getSeat(form.getSeatId(), screening);
         validateAvailableSeat(seat);
 
+        TicketType type = TicketType.valueOf(form.getType());
+
         Ticket ticket = Ticket.builder()
-                              .type(form.getType())
-                              .price(pricingStrategy.getPrice(form.getType()))
+                              .type(type)
+                              .price(pricingStrategy.getPrice(type))
                               .screening(screening)
                               .status(TicketStatus.RESERVED)
                               .build();
