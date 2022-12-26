@@ -23,7 +23,7 @@ public class ReservationController {
     }
 
     @PatchMapping("/{id}")
-    public ReservationDto processReservationPayment(@PathVariable Long id, @RequestBody PaymentForm form) {
+    public ReservationDto processReservationPayment(@PathVariable Long id, @RequestBody @Valid PaymentForm form) {
         return reservationService.processReservationPayment(id, form);
     }
 

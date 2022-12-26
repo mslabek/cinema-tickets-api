@@ -10,11 +10,13 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /**
@@ -28,14 +30,14 @@ public class CommonControllerExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Object> handleNotFound(ApiLevelException ex, HttpServletRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
-        ApiError error = new ApiError(LocalDateTime.now(), status.value(), status.name(), ex.getMessage(), request.getServletPath());
+        ApiError error = new ApiError(getTimeNowTruncated(), status.value(), status.name(), ex.getMessage(), request.getServletPath());
         return generateDefaultResponse(error, status);
     }
 
     @ExceptionHandler({ReservationRejectedException.class, ReservationPaymentException.class})
     public ResponseEntity<Object> handleBadRequests(ApiLevelException ex, HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
-        ApiError error = new ApiError(LocalDateTime.now(), status.value(), status.name(), ex.getMessage(), request.getServletPath());
+        ApiError error = new ApiError(getTimeNowTruncated(), status.value(), status.name(), ex.getMessage(), request.getServletPath());
         return generateDefaultResponse(error, status);
     }
 
@@ -49,20 +51,34 @@ public class CommonControllerExceptionHandler {
                                  .stream()
                                  .map(DefaultMessageSourceResolvable::getDefaultMessage)
                                  .toList();
-        ApiError error = new ApiError(LocalDateTime.now(), status.value(), status.name(), message, details, request.getServletPath());
+        ApiError error = new ApiError(getTimeNowTruncated(), status.value(), status.name(), message, details, request.getServletPath());
+
+        return generateDefaultResponse(error, status);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Object> handleBadRequests(HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        String message = "The request body is malformed.";
+        ApiError error = new ApiError(getTimeNowTruncated(), status.value(), status.name(), message, request.getServletPath());
         return generateDefaultResponse(error, status);
     }
 
     @ExceptionHandler({DataInconsistencyException.class, DataNotFilteredException.class})
-    ResponseEntity<Object> handleServerExceptions(ServerLevelException ex, HttpServletRequest request) {
+    ResponseEntity<Object> handleServerExceptions(HttpServletRequest request) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         String internalErrorMessage = "Something went wrong. Please try again.";
-        ApiError error = new ApiError(LocalDateTime.now(), status.value(), status.name(), internalErrorMessage, request.getServletPath());
+        ApiError error = new ApiError(getTimeNowTruncated(), status.value(), status.name(), internalErrorMessage, request.getServletPath());
         return generateDefaultResponse(error, status);
     }
 
     private ResponseEntity<Object> generateDefaultResponse(ApiError error, HttpStatus status) {
         return new ResponseEntity<>(error, new HttpHeaders(), status);
+    }
+
+    private LocalDateTime getTimeNowTruncated() {
+        return LocalDateTime.now()
+                            .truncatedTo(ChronoUnit.SECONDS);
     }
 
 }
