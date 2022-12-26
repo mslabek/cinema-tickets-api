@@ -8,8 +8,8 @@ A tickets reservation REST API application.
 * [Usage](https://github.com/mslabek/cinema-tickets-api#-usage)
 * [Tech stack](https://github.com/mslabek/cinema-tickets-api#-tech-stack)
 * [Specification](https://github.com/mslabek/cinema-tickets-api#-specification)
-* [Solutions I'm most happy with](https://github.com/mslabek/cinema-tickets-api#-solutions-i'm-most-happy-with)
-* [Problems I've run into](https://github.com/mslabek/cinema-tickets-api#-problems-i've-run-into)
+* [Solutions I'm most happy with](https://github.com/mslabek/cinema-tickets-api#-solutions-im-most-happy-with)
+* [Problems I've run into](https://github.com/mslabek/cinema-tickets-api#-problems-ive-run-into)
 * [Specification](https://github.com/mslabek/cinema-tickets-api#-specification)
 * [Additional assumptions](https://github.com/mslabek/cinema-tickets-api#-additional-assumptions)
 
