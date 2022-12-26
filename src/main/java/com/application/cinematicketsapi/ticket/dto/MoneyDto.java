@@ -3,5 +3,5 @@ package com.application.cinematicketsapi.ticket.dto;
 import java.math.BigDecimal;
 import java.util.Currency;
 
-public record MoneyDto(BigDecimal amount, Currency currency) {
+public record MoneyDto(Currency currency, BigDecimal amount) {
 }

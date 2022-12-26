@@ -35,7 +35,7 @@ public class ReservationFactory {
         reservation.setCreatedAt(LocalDateTime.now()
                                               .truncatedTo(ChronoUnit.SECONDS));
         reservation.setExpiresAt(expiryCalculator.calculate(reservation.getCreatedAt(), screening.getBeginning()));
-        reservation.setStatus(ReservationStatus.ACTIVE);
+        reservation.setStatus(ReservationStatus.PENDING);
         reservation.setName(form.getName());
         reservation.setSurname(form.getSurname());
 

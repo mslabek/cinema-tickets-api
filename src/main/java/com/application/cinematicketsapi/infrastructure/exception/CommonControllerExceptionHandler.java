@@ -2,8 +2,9 @@ package com.application.cinematicketsapi.infrastructure.exception;
 
 import com.application.cinematicketsapi.common.exception.DataInconsistencyException;
 import com.application.cinematicketsapi.common.exception.DataNotFilteredException;
-import com.application.cinematicketsapi.common.exception.ReservationRejectedException;
 import com.application.cinematicketsapi.common.exception.ResourceNotFoundException;
+import com.application.cinematicketsapi.ticket.exception.ReservationPaymentException;
+import com.application.cinematicketsapi.ticket.exception.ReservationRejectedException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,15 +23,15 @@ import java.time.LocalDateTime;
 public class CommonControllerExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Object> handleResourceNotFound(ApiLevelException ex, HttpServletRequest request) {
+    public ResponseEntity<Object> handleNotFound(ApiLevelException ex, HttpServletRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         ApiError error = new ApiError(LocalDateTime.now(), status.value(), status.name(), ex.getMessage(),
                 request.getServletPath());
         return generateDefaultResponse(error, status);
     }
 
-    @ExceptionHandler(ReservationRejectedException.class)
-    public ResponseEntity<Object> handleReservationRejectedException(ApiLevelException ex, HttpServletRequest request) {
+    @ExceptionHandler({ReservationRejectedException.class, ReservationPaymentException.class})
+    public ResponseEntity<Object> handleBadRequests(ApiLevelException ex, HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ApiError error = new ApiError(LocalDateTime.now(), status.value(), status.name(), ex.getMessage(),
                 request.getServletPath());

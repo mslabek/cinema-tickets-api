@@ -1,4 +1,4 @@
-package com.application.cinematicketsapi.common.exception;
+package com.application.cinematicketsapi.ticket.exception;
 
 import com.application.cinematicketsapi.infrastructure.exception.ApiLevelException;
 

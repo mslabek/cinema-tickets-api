@@ -4,7 +4,7 @@ import com.application.cinematicketsapi.cinema.dto.SeatStatus;
 import com.application.cinematicketsapi.cinema.model.Row;
 import com.application.cinematicketsapi.cinema.model.Seat;
 import com.application.cinematicketsapi.cinema.service.SeatService;
-import com.application.cinematicketsapi.common.exception.ReservationRejectedException;
+import com.application.cinematicketsapi.ticket.exception.ReservationRejectedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
