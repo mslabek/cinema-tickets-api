@@ -26,7 +26,7 @@ public class SeatComplexMapperImpl implements SeatComplexMapper {
     }
 
     private SeatWithStatusDto seatToSeatDtoWithSeatStatus(Seat seat, int row) {
-        SeatStatus status = seatService.establishSeatStatusWithOnlyOneRelevantTicket(seat);
+        SeatStatus status = seatService.establishSeatStatus(seat);
         return new SeatWithStatusDto(seat.getId(), row, seat.getColumn(), status);
     }
 

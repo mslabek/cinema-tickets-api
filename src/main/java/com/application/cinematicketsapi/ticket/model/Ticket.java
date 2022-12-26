@@ -30,12 +30,16 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "price_id")
     private Money price;
 
     @Enumerated(EnumType.STRING)
     private TicketStatus status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ticket_type")
+    private TicketType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "screening_id")

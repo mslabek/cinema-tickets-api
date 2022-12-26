@@ -3,6 +3,8 @@ package com.application.cinematicketsapi.cinema.service;
 import com.application.cinematicketsapi.cinema.dto.SeatStatus;
 import com.application.cinematicketsapi.cinema.model.Seat;
 import com.application.cinematicketsapi.cinema.repository.SeatRepository;
+import com.application.cinematicketsapi.common.exception.DataInconsistencyException;
+import com.application.cinematicketsapi.common.exception.DataNotFilteredException;
 import com.application.cinematicketsapi.common.exception.ResourceNotFoundException;
 import com.application.cinematicketsapi.screening.model.Screening;
 import com.application.cinematicketsapi.ticket.model.Ticket;
@@ -70,22 +72,22 @@ public class SeatService {
      * @param seat the seat containing only one relevant {@code Ticket}
      * @return the established seat status
      */
-    public SeatStatus establishSeatStatusWithOnlyOneRelevantTicket(Seat seat) {
+    public SeatStatus establishSeatStatus(Seat seat) {
         List<Ticket> tickets = seat.getTickets();
         if (tickets.size() > 1) {
-            throw new RuntimeException("Tickets were not filtered - more than one relevant ticket exists");
+            throw new DataInconsistencyException("More than one relevant ticket exists");
         }
         if (tickets.isEmpty()) {
             return SeatStatus.FREE;
         }
         Ticket ticket = tickets.get(0);
         if (ticket.getStatus() == TicketStatus.EXPIRED) {
-            throw new RuntimeException("Tickets were not filtered - relevant ticket is expired");
+            throw new DataNotFilteredException("Relevant ticket is expired");
         }
         if (ticket.getStatus() == TicketStatus.SOLD || ticket.getStatus() == TicketStatus.RESERVED) {
             return SeatStatus.TAKEN;
         } else {
-            throw new RuntimeException("Unexpected scenario. Ticket status unknown. Was there anything added to the " +
+            throw new DataInconsistencyException("Unexpected scenario. Ticket status unknown. Was there anything added to the " +
                     "TicketStatus enum?");
         }
     }

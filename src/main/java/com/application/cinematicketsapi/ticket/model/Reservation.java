@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,16 +32,15 @@ public class Reservation {
     private Long id;
 
     @OneToMany(mappedBy = "reservation", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Ticket> tickets;
+    private List<Ticket> tickets = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
     @Column(name = "first_name")
-    private String firstName;
+    private String name;
 
-    @Column(name = "last_name")
-    private String lastName;
+    private String surname;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

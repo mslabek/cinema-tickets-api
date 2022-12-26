@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -85,7 +86,14 @@ public class ScreeningService implements ScreeningDtoService {
         return screeningComplexMapper.screeningToFullDto(screening);
     }
 
-    private void filterTicketsExpiredAndFromOtherScreenings(Screening screening) {
+    public Screening getScreeningForTicketCreationWithLocking(Long id) {
+        Screening screening = screeningRepository.findScreeningWithMovieSeatsAndAllSeatTicketsWithLocking(id)
+                                                 .orElseThrow(getResourceNotFoundExceptionSupplier());
+        filterTicketsExpiredAndFromOtherScreenings(screening);
+        return screening;
+    }
+
+    public void filterTicketsExpiredAndFromOtherScreenings(Screening screening) {
         Set<Row> rows = screening.getRoom()
                                  .getRows();
 
@@ -104,6 +112,19 @@ public class ScreeningService implements ScreeningDtoService {
                 seat.setTickets(tickets);
             }
         }
+    }
+
+    public Seat getSeat(Long seatId, Screening screening) {
+        return screening.getRoom()
+                        .getRows()
+                        .stream()
+                        .map(Row::getSeats)
+                        .flatMap(Collection::stream)
+                        .filter(s -> s.getId()
+                                      .equals(seatId))
+                        .findFirst()
+                        .orElseThrow(() -> new RuntimeException("Seat not found in the room associated with the " +
+                                "screening"));
     }
 
     private static Supplier<ResourceNotFoundException> getResourceNotFoundExceptionSupplier() {

@@ -2,7 +2,10 @@ package com.application.cinematicketsapi.cinema.model;
 
 import com.application.cinematicketsapi.ticket.model.Ticket;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +14,6 @@ import java.util.List;
  * Entity representing a seat.
  */
 @Entity
-@Builder
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,7 +31,7 @@ public class Seat {
     @JoinColumn(name = "row_id")
     private Row row;
 
-    @OneToMany(mappedBy = "seat", cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "seat", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<Ticket> tickets = new ArrayList<>();
 
     public void addTicket(Ticket ticket) {
