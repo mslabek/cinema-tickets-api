@@ -7,7 +7,7 @@ A tickets reservation REST API application.
 * [Features](https://github.com/mslabek/cinema-tickets-api#-features)
 * [Usage](https://github.com/mslabek/cinema-tickets-api#-usage)
 * [Tech stack](https://github.com/mslabek/cinema-tickets-api#-tech-stack)
-* [Specification](https://github.com/mslabek/cinema-tickets-api#specification)
+* [Specification](https://github.com/mslabek/cinema-tickets-api#-specification)
 
 ## ✨ Features
 
