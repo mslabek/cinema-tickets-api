@@ -151,7 +151,7 @@ and how I solved them (or not...)
         - sometimes it doesn't really feel like oop - value objects don't carry with them their functionalities so this
           creates additional dependencies between services.
     - Before I realized this causes some `spaghetti` and `lasagna` issues in the service layer, the code was about 1k
-      lines long and the time was running short. Not only was this a large task, but frankly I have little no
+      lines long and the time was running short. Not only was this a large task, but frankly I have little to no
       experience with developing a rich domain model. I wrote this app in 5 days during Christmas, but that was
       possible only because I had some experience with anemic domains and because I neglected writing tests.
     - Ultimately, this problem was not solved - I chose consistency of already existing code over better
@@ -164,8 +164,35 @@ and how I solved them (or not...)
       it easier in the future.
     - Even though many critical javadocs are missing, I tried to at least document the controllers in Swagger to
       make it easier to test manually.
-    - Again, ultimately this was not solved, however try to I justify my transgressions against `The powers that be`
+    - Again, ultimately this was not solved, however I try to I justify my transgressions against `The powers that be`
       (that being Uncle Bob and Robert Fowler) by time constraints, willingness to read their scripture and to refactor.
+3. **One weird hack**:
+    - Context:
+        - When creating reservations, I am loading all the relevant entities in one query.
+        - For every ticket, there needs to be a seat loaded.
+        - These seats along with other entities are join fetched in one query as a part of Screening object.
+        - Seat has a bidirectional relation with Ticket. When creating a Ticket, I am getting the Seat
+          that the ticket is for and I am calling the method for synchronizing both ends of the relationship.
+        - This synchronizing method adds the Ticket to the list of tickets the Seat has.
+        - The Seat normally initializes its Ticket list as a modifiable list, but here instead it's loaded with an
+          immutable list of Tickets.
+    - My "solution" is basically to copy the immutable list to a mutable list and replace them in the Seat object.
+      Then adding the Ticket is possible.
+    - I tried to research this, but was unable to understand why this problem occurs. I will try to understand it in
+      the future. Also, I don't know the repercussions of this hack, so I'm not proud of it. Prayers to George Hotz
+      will be said so that this hack does not break the app before I come up with a proper solution.
+    - This hack is located in
+      ![TicketFactory](./src/main/java/com/application/cinematicketsapi/ticket/service/TicketFactory.java)
+      near the end of the buildTicket method.
+4. **Multiple join fetches and filtering**
+    - In order for my plan to have one JPQL query per request to work, I would have to perform multiple join fetches
+      at a time. I had to remodel some parts of the domain for it to work.
+    - Another problem was that JPA does not allow for filtering the join-fetched resources. I don't think that
+      besides changing the persistence provider there is a graceful solution for this. I settled for filtering the
+      results manually outside the database. This causes other problems, but that's the price of the compromise I guess.
+    - I could have settled for multiple queries or eager fetching at limited times, but ultimately I managed to make it
+      work. This required some research into the limitations of JPA and Hibernate and I'm pretty happy with the
+      solutions.
 
 ## 🎯 Specification
 
