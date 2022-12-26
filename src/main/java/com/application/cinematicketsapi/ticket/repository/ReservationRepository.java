@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -21,5 +22,12 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             "JOIN FETCH t.price " +
             "WHERE r.id = :id")
     Optional<Reservation> findReservationByIdWithTicketsWithLocking(Long id);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT r FROM Reservation r " +
+            "JOIN FETCH r.tickets " +
+            "WHERE r.status = 'PENDING' " +
+            "AND current_date >= r.expiresAt")
+    List<Reservation> findExpiredReservations();
 
 }

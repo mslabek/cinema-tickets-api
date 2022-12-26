@@ -28,6 +28,7 @@ public class ReservationService implements ReservationDtoService {
     private final ScreeningService screeningService;
     private final MoneyMapper moneyMapper;
     private final MoneyCalculator moneyCalculator;
+    private final TicketService ticketService;
 
     @Override
     @Transactional
@@ -48,6 +49,21 @@ public class ReservationService implements ReservationDtoService {
         return reservationMapper.mapReservationToReservationDto(reservation);
     }
 
+    @Transactional
+    public int invalidateExpiredReservations() {
+        List<Reservation> reservationsToExpire = reservationRepository.findExpiredReservations();
+        for (Reservation r : reservationsToExpire) {
+            updateReservationStatusExpired(r);
+        }
+        return reservationsToExpire.size();
+    }
+
+    private void updateReservationStatusExpired(Reservation reservation) {
+        reservation.setStatus(ReservationStatus.EXPIRED);
+        for (Ticket t : reservation.getTickets()) {
+            ticketService.updateTicketStatusExpired(t);
+        }
+    }
 
     private Reservation saveReservation(Reservation reservation) {
         return reservationRepository.save(reservation);
