@@ -184,6 +184,8 @@ and how I solved them (or not...)
     - This hack is located in
       ![TicketFactory](./src/main/java/com/application/cinematicketsapi/ticket/service/TicketFactory.java)
       near the end of the buildTicket method.
+    - In a comment in this file there is a line: "This is a temporary hack, it cannot stay like this without
+      explanation." And yet, curiously, it does stay like that without explanation.
 4. **Multiple join fetches and filtering**
     - In order for my plan to have one JPQL query per request to work, I would have to perform multiple join fetches
       at a time. I had to remodel some parts of the domain for it to work.
