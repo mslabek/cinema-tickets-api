@@ -5,6 +5,11 @@ import com.application.cinematicketsapi.screening.dto.ScreeningDetailedDto;
 import com.application.cinematicketsapi.screening.dto.ScreeningFullDto;
 import com.application.cinematicketsapi.screening.model.Screening;
 import com.application.cinematicketsapi.screening.service.ScreeningDtoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +21,7 @@ import java.util.List;
 /**
  * Rest controller handling requests referring to {@link Screening screenings}.
  */
+@Tag(name = "Screenings", description = "Operations referring to screenings")
 @RestController
 @RequestMapping("/screenings")
 @RequiredArgsConstructor
@@ -46,6 +52,14 @@ public class ScreeningController {
      * @return the list of dtos representing the found {@code Screenings} entities sorted by title and screening time
      */
     @GetMapping(params = {"begins-after", "begins-before"})
+    @Operation(description = "The screenings are sorted by title of the movie first, then by beginning of the " + "screening", summary = "Retrieves all screenings starting between two dates")
+    @Parameter(name = "begins-after", description = "the time after which the screening should be starting (lower " +
+            "boundary)", example = "2022-12-30T11:05:00")
+    @Parameter(name = "begins-before", description = "the time before which the screening should be starting (upper " +
+            "boundary)", example = "2022-12-30T16:00:00")
+    @ApiResponse(responseCode = "200", description = "Screenings retrieved successfully")
+    @ApiResponse(responseCode = "400", description = "Request validation error", content = @Content)
+    @ApiResponse(responseCode = "5xx", description = "Unexpected error", content = @Content)
     public List<ScreeningDetailedDto> getScreeningsFilteredSorted(
             @RequestParam(value = "begins-after") LocalDateTime lowerTimeBoundary,
             @RequestParam(value = "begins-before") LocalDateTime upperTimeBoundary) {
@@ -63,6 +77,12 @@ public class ScreeningController {
      * @return the dto representing the found {@code Screening} containing seat status
      */
     @GetMapping("/{id}")
+    @Operation(summary = "Retrieves detailed information about a screening")
+    @Parameter(name = "id", description = "the id of the searched screening", example = "1")
+    @ApiResponse(responseCode = "200", description = "Screenings retrieved successfully")
+    @ApiResponse(responseCode = "400", description = "Request validation error", content = @Content)
+    @ApiResponse(responseCode = "404", description = "Screening with specified id not found", content = @Content)
+    @ApiResponse(responseCode = "5xx", description = "Unexpected error", content = @Content)
     public ScreeningFullDto getScreeningWithSeatStatus(
             @PathVariable @Min(value = 1, message = "Screening id cannot be smaller than 1.") Long id) {
         return screeningService.getScreeningWithSeatStatus(id);

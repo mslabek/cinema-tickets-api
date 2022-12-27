@@ -123,7 +123,7 @@ public class ScreeningService implements ScreeningDtoService {
                         .filter(s -> s.getId()
                                       .equals(seatId))
                         .findFirst()
-                        .orElseThrow(() -> new RuntimeException("Seat not found in the room associated with the " +
+                        .orElseThrow(() -> new ResourceNotFoundException("Seat not found in the room associated with the " +
                                 "screening"));
     }
 
