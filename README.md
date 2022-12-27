@@ -22,7 +22,6 @@ A tickets reservation REST API application.
 - Customization of demo data through a json file.
 - Scheduled expiration of expired reservations.
 - Documentation - javadoc (at least some) and swagger
-- Tests (at least some)
 
 ## 🎡 Usage
 
@@ -168,10 +167,10 @@ and how I solved them (or not...)
 2. **Lack of tests and documentation**:
     - When I started building this app, I didn't notice many complexities in the domain. But even then I knew that
       proper development process is not going to help me with my self-imposed time constraints.
-    - I tried to write a couple tests for different kinds of methods to showcase that I can write them and to make
-      it easier in the future.
-    - Even though many critical javadocs are missing, I tried to at least document the controllers in Swagger to
-      make it easier to test manually.
+    - I tried to write tests at the beginning and I soon convinced myself that I wouldn't be able to finish the
+      project in time at that pace.
+    - Even though many critical javadocs are missing, especially in the ticket package, I tried to at least document
+      the controllers in Swagger to make it easier to test manually.
     - Again, ultimately this was not solved, however I try to I justify my transgressions against `The powers that be`
       (that being Uncle Bob and Robert Fowler) by time constraints, willingness to read their scripture and to refactor.
 3. **One weird hack**:
