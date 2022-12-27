@@ -51,10 +51,12 @@ A tickets reservation REST API application.
    app doesn't check if your screening begins after it ends or if the seat is free to book, so you can end up with
    multiple tickets on the same seat in the same screening. Resources are stored in the order they are added so if
    you refer to the seat with id of 3, you will refer to the third seat in the json file.
-3. To check the database directly, open `localhost:8080/h2-console` and log in with following data:
+3. To check the database directly, open `http://localhost:8080/h2-console` and log in with following data:
     - JDBC URL: `jdbc:h2:mem:dev`
     - User Name: `sa`
     - Password: (empty)
+4. Explore the REST endpoints with Swagger docs - the docs are exposed by the running application at
+   `http://localhost:8080/swagger-ui`.
 
 ### Potential problems
 
@@ -62,6 +64,9 @@ A tickets reservation REST API application.
    environment variable. `launch.sh` passes this argument as an argument to gradle.
 2. As above - if the port 8080 on your machine is not open during application deployment, it will throw an exception
    and turn off.
+3. If the demo-requests script prints error like `-bash: python: command not found`, you can either replace the
+   python calls with wherever your python binary is called in your `$PATH` variable, or you can add python to your
+   `$PATH` variable as `python`, and not for example `python3`.
 
 ## 🛠 Tech Stack
 
@@ -258,4 +263,8 @@ The goal is to build a seat reservation system for a multiplex.
 1. No authentication or external payment processing mechanism is required
 2. One reservation can concern tickets for seats from only one screening
 3. There doesn't need to be another way to pay for the tickets that through payment for the whole reservation
+4. I assume that in the point 2. of the Business scenario in the specification a given time interval refers to the
+   beginning of the screening, not to the beginning and end - current endpoint bases on two values: begins-before
+   and begins-after. If this is an incorrect assumption the controller and lower layers are constructed in a way
+   that adding another implementation would not be a problem. 
 
