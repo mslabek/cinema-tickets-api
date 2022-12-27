@@ -46,6 +46,9 @@ A tickets reservation REST API application.
 ### Other local deployment usages
 
 1. Use `curl` or a bigger http client like Postman and make your own requests.
+    - If you want to kickstart your Postman explorations, you can import
+      [this Postman collection](resources/CinemaApi.postman_collection.json) - it contains preconfigured requests with
+      example data.
 2. Modify the [`democonfig.json`](src/main/resources/democonfig.json) file to generate your own data before running
    the app. Be careful though! It's a crude functionality, so you can end up with data inconsistencies - the
    app doesn't check if your screening begins after it ends or if the seat is free to book, so you can end up with

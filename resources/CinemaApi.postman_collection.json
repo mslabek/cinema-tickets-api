@@ -1,0 +1,174 @@
+{
+  "info": {
+    "_postman_id": "2717a689-d524-41db-8162-7c61efdd05f9",
+    "name": "CinemaApi",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "22591570"
+  },
+  "item": [
+    {
+      "name": "Get a movie with screening information",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/movies/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "movies",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get all movies",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/movies",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "movies"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get screenings filtered",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/screenings?begins-after=2022-12-30T10:20:00&begins-before=2022-12-30T14:21:00",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "screenings"
+          ],
+          "query": [
+            {
+              "key": "begins-after",
+              "value": "2022-12-30T10:20:00"
+            },
+            {
+              "key": "begins-before",
+              "value": "2022-12-30T14:21:00"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get a screening with seat status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/screenings/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "screenings",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get all screenings",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/screenings",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "screenings"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create reservation",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"screeningId\": 1,\n    \"name\": \"Świętek\",\n    \"surname\": \"Schäfer\",\n    \"tickets\": [\n        {\n            \"seatId\": 3,\n            \"type\": \"STUDENT\"\n        },\n        {\n            \"seatId\": 4,\n            \"type\": \"ADULT\"\n        }\n    ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/reservations",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "reservations"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Process payment",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"amount\": 43,\n    \"currency\": \"PLN\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/reservations/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "reservations",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
